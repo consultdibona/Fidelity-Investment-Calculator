@@ -6,14 +6,9 @@
       "ticker": "FDLXX",
       "name": "Fidelity Treasury Only Money Market Fund",
       "type": "money_market",
-      "returns": {
-        "1Y": 3.4,
-        "3Y": 2.74,
-        "5Y": 1.72
-      },
+      "returns": {},
       "yield": null,
-      "asof": "2026-11-10",
-      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
+      "source": "Seven-day yield only; adjusted price does not measure money market reinvested total return"
     },
     {
       "ticker": "FZROX",
