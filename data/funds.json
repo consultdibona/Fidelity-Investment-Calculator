@@ -55,26 +55,100 @@
       "name": "Fidelity Conservative Income Bond Fund",
       "type": "bond_mutual_fund",
       "returns": {
-        "1Y": 3.62,
-        "3Y": 4.69,
-        "5Y": 3.79
+        "1Y": 3.78,
+        "3Y": 4.74,
+        "5Y": 3.99
       },
       "yield": null,
-      "asof": "2026-11-10",
-      "source": "Alpha Vantage adjusted-price estimates; Yahoo YTD discarded"
+      "asof": "2026-11-09",
+      "source": "Yahoo Finance fund performance; see return_details per period",
+      "return_details": {
+        "1Y": {
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "method": "reported_yahoo_fund_performance",
+          "asof": "2026-11-09",
+          "retrieved": "2026-11-12"
+        },
+        "3Y": {
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "method": "reported_yahoo_fund_performance",
+          "asof": "2026-11-09",
+          "retrieved": "2026-11-12"
+        },
+        "5Y": {
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "method": "reported_yahoo_fund_performance",
+          "asof": "2026-11-09",
+          "retrieved": "2026-11-12"
+        }
+      },
+      "annual_total_returns": {
+        "2012": 1.48,
+        "2013": 0.72,
+        "2014": 0.31,
+        "2015": 0.45,
+        "2016": 1.05,
+        "2017": 1.41,
+        "2018": 1.81,
+        "2019": 2.99,
+        "2020": 1.15,
+        "2021": 0,
+        "2022": 1.27,
+        "2023": 5.83,
+        "2024": 5.41,
+        "2025": 4.5
+      },
+      "annual_total_returns_source": "Yahoo Finance fundPerformance.annualTotalReturns"
     },
     {
       "ticker": "FXAIX",
       "name": "Fidelity 500 Index Fund",
       "type": "index_mutual_fund",
       "returns": {
-        "1Y": 12.95,
-        "3Y": 20.95,
-        "5Y": 11.51
+        "1Y": 12.09,
+        "3Y": 23.38,
+        "5Y": 12.05
       },
       "yield": null,
-      "asof": "2026-11-10",
-      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
+      "asof": "2026-11-09",
+      "source": "Yahoo Finance fund performance; see return_details per period",
+      "return_details": {
+        "1Y": {
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "method": "reported_yahoo_fund_performance",
+          "asof": "2026-11-09",
+          "retrieved": "2026-11-12"
+        },
+        "3Y": {
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "method": "reported_yahoo_fund_performance",
+          "asof": "2026-11-09",
+          "retrieved": "2026-11-12"
+        },
+        "5Y": {
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "method": "reported_yahoo_fund_performance",
+          "asof": "2026-11-09",
+          "retrieved": "2026-11-12"
+        }
+      },
+      "annual_total_returns": {
+        "2012": 15.99,
+        "2013": 32.37,
+        "2014": 13.66,
+        "2015": 1.38,
+        "2016": 11.97,
+        "2017": 21.81,
+        "2018": -4.4,
+        "2019": 31.47,
+        "2020": 18.4,
+        "2021": 28.69,
+        "2022": -18.13,
+        "2023": 26.29,
+        "2024": 25,
+        "2025": 17.86
+      },
+      "annual_total_returns_source": "Yahoo Finance fundPerformance.annualTotalReturns"
     },
     {
       "ticker": "SGOV",
@@ -178,5 +252,6 @@
       "yield": null
     }
   ],
-  "yahoo_checked": "2026-11-12"
+  "yahoo_checked": "2026-11-12",
+  "yahoo_performance_checked": "2026-11-12"
 }
