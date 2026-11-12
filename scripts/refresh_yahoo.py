@@ -74,10 +74,22 @@ def calculate_adjusted_returns(observations):
 def select_fund_returns(fund, info, calculated, asof, retrieved):
     """Preserve old data on failures; prefer consistent Yahoo fund-level fields."""
     if fund.get('type') == 'money_market':
-        fund['returns'] = {}
-        fund['return_details'] = {}
-        fund.pop('asof', None)
-        fund['source'] = 'Money market: use seven-day yield or issuer total returns'
+        # A constant $1 NAV cannot supply meaningful total returns.
+        # Preserve ONLY separately sourced issuer-reported money market returns.
+        details = fund.get('return_details') or {}
+        issuer_returns = {
+            period: value for period, value in (fund.get('returns') or {}).items()
+            if details.get(period, {}).get('method') == 'issuer_reported_total_return'
+        }
+        if issuer_returns:
+            fund['returns'] = issuer_returns
+            fund['return_details'] = {k: details[k] for k in issuer_returns}
+            fund['source'] = 'Issuer-reported total return; stable-NAV prices excluded'
+        else:
+            fund['returns'] = {}
+            fund['return_details'] = {}
+            fund.pop('asof', None)
+            fund['source'] = 'Money market: use seven-day yield or issuer total returns'
         return 0
 
     existing = fund.get('returns') or {}
