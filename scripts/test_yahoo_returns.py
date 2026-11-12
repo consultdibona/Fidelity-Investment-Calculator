@@ -30,6 +30,21 @@ class YahooMetricsTests(unittest.TestCase):
                             '2026-11-12', '2026-11-12')
         self.assertEqual(fund['returns'], {})
 
+    def test_preserve_issuer_reported_money_market_returns(self):
+        issuer = {
+            'ticker': 'FDLXX', 'type': 'money_market',
+            'returns': {'1Y': 3.47, '3Y': 4.24},
+            'return_details': {
+                '1Y': {'method': 'issuer_reported_total_return', 'source': 'Fidelity'},
+                '3Y': {'method': 'issuer_reported_total_return', 'source': 'Fidelity'},
+            },
+            'source': 'Fidelity official total return', 'asof': '2026-08-31'
+        }
+        select_fund_returns(issuer, {}, {'1Y': 0.0, 'YTD': 0.0},
+                            '2026-11-12', '2026-11-12')
+        self.assertEqual(issuer['returns'], {'1Y': 3.47, '3Y': 4.24})
+        self.assertEqual(issuer['asof'], '2026-08-31')
+
     def test_reported_return_and_source_preservation(self):
         fund = {'ticker': 'IBDU', 'type': 'bond_etf',
                 'returns': {'1Y': 1.9}, 'source': 'Alpha Vantage',
