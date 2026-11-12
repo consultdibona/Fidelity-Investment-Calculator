@@ -151,7 +151,8 @@ async function loadCatalog(){
 }
 $("fundsearch").addEventListener("input",e=>{selectedCatalog=null;fundSearch(e.target.value)});
 loadCatalog();
-\nif("serviceWorker" in navigator && location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
 render();
 })();
 </script>
