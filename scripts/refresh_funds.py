@@ -45,7 +45,7 @@ for _ in range(min(BATCH, n)):
     symbol = fund["ticker"]
     # Avoid overwriting fund-reported metrics with adjusted-price estimates.
     # Stable-NAV money-market prices cannot estimate reinvested total returns.
-    if fund.get("type") == "money_market" or "Yahoo Finance fund return fields" in fund.get("source", ""):
+    if fund.get("type") == "money_market":
         print(symbol, "skipped: use issuer yield or Yahoo fund metrics")
         attempted += 1
         cursor = (cursor + 1) % n
@@ -77,11 +77,28 @@ for _ in range(min(BATCH, n)):
                         if elapsed > 0:
                             returns[str(years) + "Y"] = round(((end_price / start_price) ** (1 / elapsed) - 1) * 100, 2)
                 if returns:
-                    fund["returns"] = returns
-                    fund["asof"] = str(end_date)
-                    fund["source"] = "Alpha Vantage weekly adjusted close (calculated annualized return)"
-                    updated += 1
-                    print(symbol, returns)
+                    existing = fund.setdefault("returns", {})
+                    details = fund.setdefault("return_details", {})
+                    updated_terms = {}
+                    for term, value in returns.items():
+                        previous = details.get(term, {})
+                        previous_source = previous.get("source", fund.get("source", ""))
+                        if "Yahoo" in previous_source or "issuer" in previous_source.lower():
+                            continue
+                        existing[term] = value
+                        details[term] = {
+                            "source": "Alpha Vantage weekly adjusted close (calculated)",
+                            "method": "adjusted_close_ratio",
+                            "asof": str(end_date)
+                        }
+                        updated_terms[term] = value
+                    if updated_terms:
+                        fund["asof"] = str(end_date)
+                        fund["source"] = "Mixed historical sources; see return_details by period"
+                        updated += 1
+                        print(symbol, updated_terms)
+                    else:
+                        print(symbol, "all periods kept from higher-priority sources")
                 else:
                     print(symbol, "insufficient history")
     except Exception as e:
