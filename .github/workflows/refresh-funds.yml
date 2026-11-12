@@ -2,7 +2,7 @@ name: Refresh fund historical returns
 on:
   workflow_dispatch:
   schedule:
-    - cron: "25 13 * * 1"
+    - cron: "25 13 * * 1-5"
 permissions:
   contents: write
 jobs:
