@@ -15,6 +15,8 @@ jobs:
           python-version: "3.12"
       - name: Install yfinance
         run: python -m pip install "yfinance>=0.2.60,<2"
+      - name: Test return calculations before updating data
+        run: python -m unittest discover -s scripts -p "test_yahoo_returns.py" -v
       - name: Refresh available fund-level performance and yield fields
         run: python scripts/refresh_yahoo.py
       - name: Save updates
