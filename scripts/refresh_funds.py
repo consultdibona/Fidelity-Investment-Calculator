@@ -43,6 +43,13 @@ def fetch(ticker):
 for _ in range(min(BATCH, n)):
     fund = funds[cursor]
     symbol = fund["ticker"]
+    # Avoid overwriting fund-reported metrics with adjusted-price estimates.
+    # Stable-NAV money-market prices cannot estimate reinvested total returns.
+    if fund.get("type") == "money_market" or "Yahoo Finance fund return fields" in fund.get("source", ""):
+        print(symbol, "skipped: use issuer yield or Yahoo fund metrics")
+        attempted += 1
+        cursor = (cursor + 1) % n
+        continue
     try:
         payload = fetch(symbol)
         series = payload.get("Weekly Adjusted Time Series")
