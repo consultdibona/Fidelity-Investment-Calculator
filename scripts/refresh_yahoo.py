@@ -36,7 +36,6 @@ for fund in payload.get("funds", []):
         info = yf.Ticker(symbol).get_info() or {}
         metrics = {}
         for period, field in (
-            ("YTD", "ytdReturn"),
             ("3Y", "threeYearAverageReturn"),
             ("5Y", "fiveYearAverageReturn"),
         ):
@@ -51,7 +50,10 @@ for fund in payload.get("funds", []):
             fund.pop("asof", None)
             fund["source"] = "Yahoo Finance 7-day yield only; official total returns not loaded"
         if metrics and fund.get("type") != "money_market":
-            fund["returns"] = metrics
+            # Preserve existing 1Y, because Yahoo supplies only 3Y and 5Y here.
+            # YTD omitted: Yahoo has inconsistent unit representations.
+            existing = {k: v for k, v in fund.get("returns", {}).items() if k == "1Y"}
+            fund["returns"] = {**existing, **metrics}
             fund["asof"] = today
             fund["source"] = "Yahoo Finance fund return fields via yfinance (retrieved " + today + ")"
             changed += 1
