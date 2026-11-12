@@ -26,6 +26,7 @@ main{max-width:960px;padding:0 14px 30px;margin:-20px auto 0}.panel{background:#
 <details class="settings"><summary>Enter an income yield manually (optional)</summary><div class="inside"><div class="editrow"><label for="manualticker">Fund</label><label for="manualyield">Yield %</label><label for="yielddate">As-of date</label></div><div class="editrow"><select id="manualticker" style="min-width:0;width:100%;padding:8px;border:1px solid #ccdce1;border-radius:8px"></select><input id="manualyield" type="number" step=".01" placeholder="e.g. 4.50"><input id="yielddate" type="date"></div>
 <div class="row" style="justify-content:flex-start;flex-wrap:wrap"><label for="yieldtype" class="mini">Yield measure</label><select id="yieldtype" style="padding:8px;border:1px solid #ccdce1;border-radius:8px"><option value="7-day yield">7-day yield</option><option value="30-day SEC yield">30-day SEC yield</option><option value="Trailing distribution yield">Trailing distribution yield</option></select>
 <button class="smallbtn" id="saveyield" type="button">Save yield</button><button class="smallbtn" id="clearyield" type="button">Clear</button></div>
+<p id="yielderror" class="danger hide" role="alert"></p><p id="yieldsuccess" class="mini hide" role="status"></p>
 <p class="mini">Enter a yield only after checking the fund issuer's current disclosure. Manually entered yields remain on your device and do not change future-growth assumptions.</p></div></details>
 </section>
 <div class="cols"><section class="panel"><h2>2. Enter a contribution</h2><label class="muted" for="amount">Amount being added to Fidelity</label><div class="field"><span>$</span><input id="amount" type="number" min="0" step="0.01" inputmode="decimal" value="200" aria-label="Contribution amount"></div><div class="amount-buttons"><button class="smallbtn" data-amount="25">$25</button><button class="smallbtn" data-amount="50">$50</button><button class="smallbtn" data-amount="100">$100</button><button class="smallbtn" data-amount="200">$200</button></div><details class="settings"><summary>⚙ Edit strategy percentages and return estimates</summary><div class="inside"><p class="mini">Allocation percentages must total 100%. Return assumptions are editable and are not live quotes or guaranteed APYs.</p><div class="editrow"><span class="mini">Fund</span><span class="mini">Allocation %</span><span class="mini">Return %</span></div><div id="editor"></div><div class="fundstats"><b style="font-size:13px">Add or change a fund</b><p>Start typing a ticker or fund name. Select a match to add it to this strategy. Historical results appear only when verified market data is available.</p><input id="fundsearch" style="width:100%;border:1px solid #ccdce1;border-radius:9px;padding:11px" autocomplete="off" placeholder="Search FXAIX, SGOV, VTI..."><div id="fundsuggest" class="searchlist hide"></div><button type="button" id="addcustom" class="smallbtn" style="margin-top:8px">Add typed ticker manually</button><div id="funddetail" class="hide"></div><div style="display:flex;gap:8px;align-items:center;margin-top:9px"><label for="replacefund">Replace existing:</label><select id="replacefund"><option value="">No, add new</option></select></div><p id="fundsearchstatus" class="mini"></p></div><div id="percenttotal" class="muted"></div><p id="error" class="danger"></p><button class="smallbtn" id="resetstrategy">Reset this strategy</button> <button class="smallbtn" id="resetall">Reset everything</button></div></details><p class="subtle">Your changes are saved on this device only. No account credentials or financial data are transmitted.</p></section>
@@ -92,7 +93,22 @@ function performance(){
 }
 function loadYieldEditor(){let ticker=$("manualticker").value,item=manualYields[ticker];$("manualyield").value=item?item.value:"";$("yielddate").value=item?.asof||"";$("yieldtype").value=item?.type||"7-day yield";}
 $("manualticker").onchange=loadYieldEditor;
-$("saveyield").onclick=()=>{let t=$("manualticker").value,n=Number($("manualyield").value),date=$("yielddate").value;if(!t||$("manualyield").value===""||!Number.isFinite(n)||n<0||n>100||!/^\\d{4}-\\d{2}-\\d{2}$/.test(date)){alert("Choose a fund, enter a yield between 0% and 100%, and provide its as-of date.");return}manualYields[t]={value:n,asof:date,type:$("yieldtype").value};try{localStorage.setItem(yieldKey,JSON.stringify(manualYields))}catch(e){}performance()};
+$("saveyield").onclick=()=>{
+  const ticker=$("manualticker").value;
+  const raw=$("manualyield").value.trim();
+  const rate=Number(raw);
+  const date=$("yielddate").value;
+  let err="";
+  if(!ticker)err="Select a fund first.";
+  else if(raw===""||!Number.isFinite(rate)||rate<0||rate>100)err="Enter a yield from 0% to 100%.";
+  else if(!date||!Number.isFinite(Date.parse(date))||new Date(date+"T00:00:00").getFullYear()<2000)err="Choose a valid as-of date.";
+  if(err){$("yielderror").textContent=err;$("yielderror").classList.remove("hide");return}
+  $("yielderror").classList.add("hide");
+  manualYields[ticker]={value:rate,asof:date,type:$("yieldtype").value};
+  try{localStorage.setItem(yieldKey,JSON.stringify(manualYields))}catch(e){}
+  performance();$("yieldsuccess").textContent="Saved "+ticker+" income yield: "+percent(rate)+" ("+date+").";
+  $("yieldsuccess").classList.remove("hide");
+};
 $("clearyield").onclick=()=>{delete manualYields[$("manualticker").value];try{localStorage.setItem(yieldKey,JSON.stringify(manualYields))}catch(e){}loadYieldEditor();performance()};
 
 function strategies(){for(let s of Object.values(state.strategies))for(let t of Object.keys(s.funds))ensureInfo(t); $("strategies").innerHTML=Object.entries(state.strategies).map(([k,s])=>'<button class="strategy" data-strategy="'+k+'" aria-pressed="'+(state.selected===k)+'"><strong>'+s.name+'</strong><small>Risk: '+s.risk+'</small><span class="return">~'+percent(expected(s))+'</span><small>Illustrative annual return</small></button>').join("");document.querySelectorAll("[data-strategy]").forEach(b=>b.onclick=()=>{state.selected=b.dataset.strategy;save();render()});$("strategynote").textContent=state.strategies[state.selected].description+" Estimates use variable income yields and a hypothetical stock return, not guaranteed APYs.";$("risklabel").textContent=state.strategies[state.selected].risk}
