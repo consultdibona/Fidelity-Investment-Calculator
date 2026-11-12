@@ -1,0 +1,118 @@
+{
+  "updated": null,
+  "source": "Starter catalog (fund names only; no live performance quotes)",
+  "funds": [
+    {
+      "ticker": "FDLXX",
+      "name": "Fidelity Treasury Only Money Market Fund",
+      "type": "money_market",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "FZROX",
+      "name": "Fidelity ZERO Total Market Index Fund",
+      "type": "index_mutual_fund",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "IBDU",
+      "name": "iShares iBonds Dec 2029 Term Corporate ETF",
+      "type": "bond_etf",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "FCNVX",
+      "name": "Fidelity Conservative Income Bond Fund",
+      "type": "bond_mutual_fund",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "FXAIX",
+      "name": "Fidelity 500 Index Fund",
+      "type": "index_mutual_fund",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "SGOV",
+      "name": "iShares 0-3 Month Treasury Bond ETF",
+      "type": "treasury_etf",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "FUMBX",
+      "name": "Fidelity Short-Term Treasury Bond Index Fund",
+      "type": "bond_mutual_fund",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "FSHBX",
+      "name": "Fidelity Short-Term Bond Fund",
+      "type": "bond_mutual_fund",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "IBTJ",
+      "name": "iShares iBonds Dec 2029 Term Treasury ETF",
+      "type": "treasury_etf",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "FDLAX",
+      "name": "Fidelity Treasury Money Market Fund - Institutional Class (verify access)",
+      "type": "money_market",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "VTI",
+      "name": "Vanguard Total Stock Market ETF",
+      "type": "equity_etf",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "BND",
+      "name": "Vanguard Total Bond Market ETF",
+      "type": "bond_etf",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "VT",
+      "name": "Vanguard Total World Stock ETF",
+      "type": "equity_etf",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "SPAXX",
+      "name": "Fidelity Government Money Market Fund",
+      "type": "money_market",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "FDRXX",
+      "name": "Fidelity Government Cash Reserves",
+      "type": "money_market",
+      "returns": {},
+      "yield": null
+    },
+    {
+      "ticker": "FXIFX",
+      "name": "Fidelity Freedom Index 2030 Fund Investor Class",
+      "type": "target_date_mutual_fund",
+      "returns": {},
+      "yield": null
+    }
+  ]
+}
