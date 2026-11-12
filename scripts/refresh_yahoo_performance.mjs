@@ -234,6 +234,18 @@ async function main() {
                     JSON.stringify({ performanceOverview: Object.keys(overview),
                                      loadAdjustedReturns: Object.keys(adjusted),
                                      annualReturnsRows: annualCount }));
+        const wanted = ["ytdReturnPct", "oneYearTotalReturn",
+                        "threeYearTotalReturn", "fiveYrAvgReturnPct"];
+        const samples = {};
+        for (const key of wanted) {
+          const raw = overview[key];
+          if (raw == null) continue;
+          if (typeof raw === "number" && Number.isFinite(raw))
+            samples[key] = raw;
+          else if (typeof raw?.raw === "number" && Number.isFinite(raw.raw))
+            samples[key] = { raw: raw.raw, fmt: typeof raw.fmt === "string" ? raw.fmt : undefined };
+        }
+        console.log(fund.ticker, "ETF return candidates (for unit verification):", JSON.stringify(samples));
         console.log(fund.ticker, "no usable fund-performance fields; prior figures retained");
         continue;
       }
