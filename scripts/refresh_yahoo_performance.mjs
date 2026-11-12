@@ -12,11 +12,29 @@ const PATH = "data/funds.json";
 const CORE = new Set(["FDLXX", "FZROX", "IBDU", "FCNVX", "FXAIX"]);
 
 export function parseRatio(raw) {
-  // quoteSummary fundPerformance percentage fields are fraction-of-one rates.
-  // Treat numbers outside [-1,1] as unsupported, rather than guessing units.
+  // The unvalidated Yahoo response may wrap numbers as {raw, fmt}.
+  if (raw && typeof raw === "object" && !(raw instanceof Date)) raw = raw.raw;
+  // fundPerformance uses decimal fractions (0.12 = 12%).
   if (typeof raw !== "number" || !Number.isFinite(raw) || raw <= -1 || raw >= 1) return null;
   const percent = +(raw * 100).toFixed(2);
   return percent > -100 && percent < 100 ? percent : null;
+}
+
+export function parseAsOfDate(raw) {
+  if (raw && typeof raw === "object" && !(raw instanceof Date)) raw = raw.raw ?? raw.fmt;
+  let date = null;
+  if (raw instanceof Date) date = raw;
+  else if (typeof raw === "number" && Number.isFinite(raw))
+    date = new Date(raw > 100000000000 ? raw : raw * 1000);
+  else if (typeof raw === "string" && raw.trim()) {
+    const value = raw.trim();
+    const tenDigits = value.length === 10 && [...value].every(ch => ch >= "0" && ch <= "9");
+    date = tenDigits ? new Date(Number(value) * 1000) : new Date(value);
+  }
+  if (!date || Number.isNaN(date.valueOf())) return null;
+  const year = date.getUTCFullYear();
+  if (year < 2000 || year > new Date().getUTCFullYear() + 1) return null;
+  return date.toISOString().slice(0, 10);
 }
 
 export function getReportedReturns(performance) {
@@ -30,13 +48,35 @@ export function getReportedReturns(performance) {
     const number = parseRatio(a[field]);
     if (number !== null) returns[key] = number;
   }
-  let asof = null;
-  const rawDate = a.asOfDate ?? performance?.performanceOverview?.asOfDate;
-  if (rawDate != null) {
-    const date = new Date(rawDate);
-    if (!Number.isNaN(date.valueOf())) asof = date.toISOString().slice(0, 10);
-  }
+  const asof = parseAsOfDate(a.asOfDate ?? performance?.performanceOverview?.asOfDate);
   return { returns, asof };
+}
+
+export function onlyUnrelatedRiskValidationErrors(error) {
+  const errors = error?.errors;
+  if (!Array.isArray(errors) || errors.length === 0) return false;
+  return errors.every(issue => {
+    const path = issue?.instancePath;
+    return typeof path === "string" && (
+      path.startsWith("/fundPerformance/riskOverviewStatistics/riskStatistics/") ||
+      path.startsWith("/fundPerformance/riskOverviewStatisticsCat/riskStatisticsCat/")
+    );
+  });
+}
+
+export async function fetchFundPerformance(yahoo, symbol) {
+  const query = { modules: ["fundPerformance"] };
+  try {
+    return await yahoo.quoteSummary(symbol, query);
+  } catch (error) {
+    // Yahoo omitted some risk statistics required by the library's schema.
+    // That does not invalidate the unrelated return table.
+    if (!onlyUnrelatedRiskValidationErrors(error)) throw error;
+    console.log(symbol, "risk-statistics-only schema mismatch; validating returns independently");
+    if (error?.result?.fundPerformance) return error.result;
+    // Officially documented third-argument fallback when error.result is absent.
+    return await yahoo.quoteSummary(symbol, query, { validateResult: false });
+  }
 }
 
 export function importMetrics(fund, performance, retrieved) {
@@ -73,7 +113,7 @@ export function importMetrics(fund, performance, retrieved) {
   return entries.length;
 }
 
-function test() {
+async function test() {
   function assert(condition, message) { if (!condition) throw new Error("Test failed: " + message); }
   const p = { loadAdjustedReturns: { ytd: 0.118, oneYear: 0.1209, threeYear: 0.2325, fiveYear: 0.1117, asOfDate: "2026-11-09" } };
   const x = getReportedReturns(p);
@@ -89,11 +129,30 @@ function test() {
   assert(f.return_details["1Y"].method === "reported_yahoo_fund_performance", "Record provenance");
   const m = {ticker:"FDLXX",type:"money_market",returns:{}};
   assert(importMetrics(m,p,"2026-11-12") === 0 && !m.returns["1Y"], "Don't use price-table returns for money markets");
-  console.log("Yahoo fundPerformance mapping tests passed.");
+  assert(parseRatio({ raw: 0.0615, fmt: "6.15%" }) === 6.15, "Unvalidated Yahoo numeric wrapper");
+  const seconds = Date.parse("2026-11-09T00:00:00Z") / 1000;
+  assert(parseAsOfDate({ raw: seconds }) === "2026-11-09", "Unix-seconds as-of date");
+  const schemaError = {
+    message: "Failed Yahoo Schema validation",
+    errors: [{ instancePath: "/fundPerformance/riskOverviewStatistics/riskStatistics/2" }],
+    result: { fundPerformance: p },
+  };
+  assert(onlyUnrelatedRiskValidationErrors(schemaError), "FZROX risk field schema mismatch");
+  assert(onlyUnrelatedRiskValidationErrors({
+    errors: [{ instancePath: "/fundPerformance/riskOverviewStatisticsCat/riskStatisticsCat/2" }]
+  }), "IBDU category risk field schema mismatch");
+  assert(!onlyUnrelatedRiskValidationErrors({
+    errors: [{ instancePath: "/fundPerformance/loadAdjustedReturns/threeYear" }]
+  }), "Reject unrelated return-field schema error");
+  let calls = 0;
+  const fake = { quoteSummary: async () => { calls++; throw schemaError; } };
+  const recovered = await fetchFundPerformance(fake, "FZROX");
+  assert(recovered?.fundPerformance === p && calls === 1, "Recover already fetched response");
+  console.log("Yahoo fundPerformance validation recovery and mapping tests passed.");
 }
 
 async function main() {
-  if (process.argv.includes("--self-test")) { test(); return; }
+  if (process.argv.includes("--self-test")) { await test(); return; }
   const { default: YahooFinance } = await import("yahoo-finance2");
   const yahoo = new YahooFinance();
   const data = JSON.parse(fs.readFileSync(PATH, "utf8"));
@@ -102,7 +161,7 @@ async function main() {
   for (const fund of data.funds ?? []) {
     if (!CORE.has(fund.ticker) || fund.type === "money_market") continue;
     try {
-      const response = await yahoo.quoteSummary(fund.ticker, { modules: ["fundPerformance"] });
+      const response = await fetchFundPerformance(yahoo, fund.ticker);
       const perf = response?.fundPerformance;
       const { returns, asof } = getReportedReturns(perf);
       console.log(fund.ticker, perf ? "fundPerformance received" : "fundPerformance absent", JSON.stringify(returns), "as-of", asof || "unknown");
