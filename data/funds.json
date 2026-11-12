@@ -1,69 +1,123 @@
 {
-  "updated": null,
+  "updated": "2026-11-12",
   "source": "Starter catalog (fund names only; no live performance quotes)",
   "funds": [
     {
       "ticker": "FDLXX",
       "name": "Fidelity Treasury Only Money Market Fund",
       "type": "money_market",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": 3.4,
+        "3Y": 2.74,
+        "5Y": 1.72
+      },
+      "yield": null,
+      "asof": "2026-11-10",
+      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
     },
     {
       "ticker": "FZROX",
       "name": "Fidelity ZERO Total Market Index Fund",
       "type": "index_mutual_fund",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": 13.12,
+        "3Y": 20.94,
+        "5Y": 10.62
+      },
+      "yield": null,
+      "asof": "2026-11-10",
+      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
     },
     {
       "ticker": "IBDU",
       "name": "iShares iBonds Dec 2029 Term Corporate ETF",
       "type": "bond_etf",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": 1.9,
+        "3Y": 6.14,
+        "5Y": 1.22
+      },
+      "yield": null,
+      "asof": "2026-11-11",
+      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
     },
     {
       "ticker": "FCNVX",
       "name": "Fidelity Conservative Income Bond Fund",
       "type": "bond_mutual_fund",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": 3.62,
+        "3Y": 4.69,
+        "5Y": 3.79
+      },
+      "yield": null,
+      "asof": "2026-11-10",
+      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
     },
     {
       "ticker": "FXAIX",
       "name": "Fidelity 500 Index Fund",
       "type": "index_mutual_fund",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": 12.95,
+        "3Y": 20.95,
+        "5Y": 11.51
+      },
+      "yield": null,
+      "asof": "2026-11-10",
+      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
     },
     {
       "ticker": "SGOV",
       "name": "iShares 0-3 Month Treasury Bond ETF",
       "type": "treasury_etf",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": 3.72,
+        "3Y": 4.48,
+        "5Y": 3.88
+      },
+      "yield": null,
+      "asof": "2026-11-11",
+      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
     },
     {
       "ticker": "FUMBX",
       "name": "Fidelity Short-Term Treasury Bond Index Fund",
       "type": "bond_mutual_fund",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": 1.16,
+        "3Y": 4.1,
+        "5Y": 1.53
+      },
+      "yield": null,
+      "asof": "2026-11-10",
+      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
     },
     {
       "ticker": "FSHBX",
       "name": "Fidelity Short-Term Bond Fund",
       "type": "bond_mutual_fund",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": 1.92,
+        "3Y": 4.36,
+        "5Y": 2.33
+      },
+      "yield": null,
+      "asof": "2026-11-10",
+      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
     },
     {
       "ticker": "IBTJ",
       "name": "iShares iBonds Dec 2029 Term Treasury ETF",
       "type": "treasury_etf",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": 0.74,
+        "3Y": 4.49,
+        "5Y": 0.01
+      },
+      "yield": null,
+      "asof": "2026-11-11",
+      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
     },
     {
       "ticker": "FDLAX",
