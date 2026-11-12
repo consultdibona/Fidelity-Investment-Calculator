@@ -1,0 +1,28 @@
+name: Refresh Yahoo fund metrics
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "40 14 * * 2"
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install yfinance
+        run: python -m pip install "yfinance>=0.2.60,<2"
+      - name: Refresh available fund-level performance and yield fields
+        run: python scripts/refresh_yahoo.py
+      - name: Save updates
+        run: |
+          if ! git diff --quiet -- data/funds.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/funds.json
+            git commit -m "Update available Yahoo Finance fund metrics"
+            git push
+          fi
