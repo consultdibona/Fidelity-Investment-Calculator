@@ -118,6 +118,11 @@ def select_fund_returns(fund, info, calculated, asof, retrieved):
 
 def refresh(path=CATALOG):
     import yfinance as yf
+    # Per official yfinance network configuration, retry transient failures.
+    try:
+        yf.config.network.retries = 2
+    except (AttributeError, TypeError):
+        pass
     payload = json.loads(path.read_text(encoding='utf-8'))
     today = datetime.now(timezone.utc).date()
     retrieved = today.isoformat()
