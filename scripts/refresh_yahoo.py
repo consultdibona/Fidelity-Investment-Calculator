@@ -105,15 +105,19 @@ def select_fund_returns(fund, info, calculated, asof, retrieved):
             'method': 'reported_yahoo_field', 'asof': None,
             'retrieved': retrieved,
         })
+    applied = 0
     for term, (value, meta) in new.items():
+        if details.get(term, {}).get("method") == "reported_yahoo_fund_performance":
+            continue  # Preserve the actual Yahoo fund-performance table when available.
         existing[term] = value
         details[term] = meta
-    if new:
+        applied += 1
+    if applied:
         fund['returns'] = existing
         fund['return_details'] = details
         fund['asof'] = asof or fund.get('asof')
         fund['source'] = 'Mixed historical sources; see return_details by period'
-    return len(new)
+    return applied
 
 
 def refresh(path=CATALOG):
