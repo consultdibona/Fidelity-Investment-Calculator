@@ -1,15 +1,45 @@
 {
   "updated": "2026-11-12",
-  "source": "Starter catalog (fund names only; no live performance quotes)",
+  "source": "Fund catalog with Yahoo historical performance and issuer-reported yields; each metric has its own as-of date",
   "funds": [
     {
       "ticker": "FDLXX",
       "name": "Fidelity Treasury Only Money Market Fund",
       "type": "money_market",
-      "returns": {},
-      "yield": null,
-      "source": "Money market: use seven-day yield or issuer total returns",
-      "return_details": {}
+      "returns": {
+        "1Y": 3.47,
+        "3Y": 4.24,
+        "5Y": 3.38
+      },
+      "yield": {
+        "value": 3.62,
+        "type": "7-day yield",
+        "asof": "2026-11-11",
+        "source": "Fidelity Institutional money-market daily pricing",
+        "source_url": "https://institutional.fidelity.com/app/tabbed/dailypricing/FIIS_PP_SP28_DPL3.html?asOf=Month&fundIdentifier=symb&navId=325&productLineId=3&salesCharge=AtNav&shareClassId=56SC55SC50SC58SC12SC3SC57SC51SC52SC53SC54SC59SC&tab=dailypricing"
+      },
+      "source": "Fidelity Investments issuer-reported average annual total returns",
+      "return_details": {
+        "1Y": {
+          "source": "Fidelity Investments: Performance & Risk (FDLXX)",
+          "method": "issuer_reported_total_return",
+          "asof": "2026-08-31",
+          "source_url": "https://fundresearch.fidelity.com/mutual-funds/performance-and-risk/31617H300"
+        },
+        "3Y": {
+          "source": "Fidelity Investments: Performance & Risk (FDLXX)",
+          "method": "issuer_reported_total_return",
+          "asof": "2026-08-31",
+          "source_url": "https://fundresearch.fidelity.com/mutual-funds/performance-and-risk/31617H300"
+        },
+        "5Y": {
+          "source": "Fidelity Investments: Performance & Risk (FDLXX)",
+          "method": "issuer_reported_total_return",
+          "asof": "2026-08-31",
+          "source_url": "https://fundresearch.fidelity.com/mutual-funds/performance-and-risk/31617H300"
+        }
+      },
+      "asof": "2026-08-31"
     },
     {
       "ticker": "FZROX",
@@ -71,7 +101,13 @@
         "YTD": 0.9,
         "1Y": 1.8
       },
-      "yield": null,
+      "yield": {
+        "value": 5.34,
+        "type": "30-day SEC yield",
+        "asof": "2026-11-10",
+        "source": "iShares / BlackRock IBDU fund information",
+        "source_url": "https://www.ishares.com/us/products/310035/ishares-ibonds-dec-2029-term-corporate-etf"
+      },
       "asof": "2026-11-10",
       "source": "Yahoo Finance fund performance; see return_details per period",
       "return_details": {
@@ -108,7 +144,16 @@
         "2024": 3.61,
         "2025": 7.59
       },
-      "annual_total_returns_source": "Yahoo Finance fundPerformance.annualTotalReturns"
+      "annual_total_returns_source": "Yahoo Finance fundPerformance.annualTotalReturns",
+      "additional_yields": [
+        {
+          "value": 4.69,
+          "type": "12-month trailing distribution yield",
+          "asof": "2026-11-10",
+          "source": "iShares / BlackRock IBDU fund information",
+          "source_url": "https://www.ishares.com/us/products/310035/ishares-ibonds-dec-2029-term-corporate-etf"
+        }
+      ]
     },
     {
       "ticker": "FCNVX",
