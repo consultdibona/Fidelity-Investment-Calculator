@@ -38,18 +38,37 @@ export function parseAsOfDate(raw) {
 }
 
 export function getReportedReturns(performance) {
-  const a = performance?.loadAdjustedReturns;
-  if (!a || typeof a !== "object") return { returns: {}, asof: null };
+  const adjusted = performance?.loadAdjustedReturns;
+  const overview = performance?.performanceOverview;
   const returns = {};
-  for (const [key, field] of [
-    ["YTD", "ytd"], ["1Y", "oneYear"],
-    ["3Y", "threeYear"], ["5Y", "fiveYear"],
+  const fields = {};
+  const dates = {};
+  // Prefer the fields that already match Yahoo's website for mutual funds.
+  // Some ETFs omit loadAdjustedReturns but publish performanceOverview.
+  for (const [source, obj, mapping] of [
+    ["loadAdjustedReturns", adjusted, [
+      ["YTD", "ytd"], ["1Y", "oneYear"], ["3Y", "threeYear"], ["5Y", "fiveYear"],
+    ]],
+    ["performanceOverview", overview, [
+      ["YTD", "ytdReturnPct"], ["1Y", "oneYearTotalReturn"],
+      ["3Y", "threeYearTotalReturn"], ["5Y", "fiveYrAvgReturnPct"],
+    ]],
   ]) {
-    const number = parseRatio(a[field]);
-    if (number !== null) returns[key] = number;
+    if (!obj || typeof obj !== "object") continue;
+    const date = parseAsOfDate(obj.asOfDate);
+    for (const [term, field] of mapping) {
+      if (term in returns) continue; // Never blend two sources for same period.
+      const num = parseRatio(obj[field]);
+      if (num === null) continue;
+      returns[term] = num;
+      fields[term] = "fundPerformance." + source + "." + field;
+      dates[term] = date;
+    }
   }
-  const asof = parseAsOfDate(a.asOfDate ?? performance?.performanceOverview?.asOfDate);
-  return { returns, asof };
+  return {
+    returns, fields, dates,
+    asof: parseAsOfDate(adjusted?.asOfDate ?? overview?.asOfDate),
+  };
 }
 
 export function onlyUnrelatedRiskValidationErrors(error) {
@@ -81,36 +100,42 @@ export async function fetchFundPerformance(yahoo, symbol) {
 
 export function importMetrics(fund, performance, retrieved) {
   if (fund.type === "money_market") return 0;
-  const { returns, asof } = getReportedReturns(performance);
+  const { returns, asof, fields, dates } = getReportedReturns(performance);
   const entries = Object.entries(returns);
-  if (!entries.length) return 0;
-  fund.returns ??= {};
-  fund.return_details ??= {};
-  for (const [term, value] of entries) {
-    fund.returns[term] = value;
-    fund.return_details[term] = {
-      source: "Yahoo Finance fundPerformance.loadAdjustedReturns",
-      method: "reported_yahoo_fund_performance",
-      asof,
-      retrieved,
-    };
+  let changed = 0;
+  if (entries.length) {
+    fund.returns ??= {};
+    fund.return_details ??= {};
+    for (const [term, value] of entries) {
+      fund.returns[term] = value;
+      fund.return_details[term] = {
+        source: "Yahoo Finance " + fields[term],
+        method: "reported_yahoo_fund_performance",
+        asof: dates[term],
+        retrieved,
+      };
+      changed++;
+    }
+    fund.asof = asof || fund.asof;
+    fund.source = "Yahoo Finance fund performance; see return_details per period";
   }
-  fund.asof = asof || fund.asof;
-  fund.source = "Yahoo Finance fund performance; see return_details per period";
+  // Annual performance is useful even when the trailing-return fields are absent.
   const annual = performance?.annualTotalReturns?.returns;
   if (Array.isArray(annual)) {
     const years = {};
     for (const item of annual) {
-      const year = Number(item?.year), number = parseRatio(item?.annualValue);
+      const rawYear = item?.year && typeof item.year === "object" ? item.year.raw : item?.year;
+      const year = Number(rawYear), number = parseRatio(item?.annualValue);
       if (Number.isInteger(year) && year >= 2000 && year <= 2100 && number !== null)
         years[String(year)] = number;
     }
     if (Object.keys(years).length) {
       fund.annual_total_returns = years;
       fund.annual_total_returns_source = "Yahoo Finance fundPerformance.annualTotalReturns";
+      changed += Object.keys(years).length;
     }
   }
-  return entries.length;
+  return changed;
 }
 
 async function test() {
@@ -148,7 +173,38 @@ async function test() {
   const fake = { quoteSummary: async () => { calls++; throw schemaError; } };
   const recovered = await fetchFundPerformance(fake, "FZROX");
   assert(recovered?.fundPerformance === p && calls === 1, "Recover already fetched response");
-  console.log("Yahoo fundPerformance validation recovery and mapping tests passed.");
+  const ibdu = {
+    performanceOverview: {
+      ytdReturnPct: { raw: 0.011, fmt: "1.10%" },
+      oneYearTotalReturn: { raw: 0.02, fmt: "2.00%" },
+      threeYearTotalReturn: { raw: 0.068, fmt: "6.80%" },
+      fiveYrAvgReturnPct: { raw: 0.012, fmt: "1.20%" },
+      asOfDate: { raw: seconds },
+    },
+    performanceOverviewCat: { oneYearTotalReturn: 0.80 },
+  };
+  const ibduResult = getReportedReturns(ibdu);
+  assert(ibduResult.returns["1Y"] === 2.00, "IBDU ETF fallback to performanceOverview 1Y");
+  assert(ibduResult.returns["3Y"] === 6.80, "IBDU ETF fallback to performanceOverview 3Y");
+  assert(ibduResult.returns["5Y"] === 1.20, "IBDU ETF fallback to performanceOverview 5Y");
+  assert(ibduResult.returns.YTD === 1.10, "IBDU ETF fallback to performanceOverview YTD");
+  assert(ibduResult.fields["1Y"] === "fundPerformance.performanceOverview.oneYearTotalReturn", "Track ETF field provenance");
+  const etf = { ticker: "IBDU", type: "bond_etf", returns: { "3Y": 6.15 }};
+  importMetrics(etf, ibdu, "2026-11-12");
+  assert(etf.returns["3Y"] === 6.80 && etf.returns["1Y"] === 2, "ETF values imported");
+  assert(etf.return_details["3Y"].source.includes("performanceOverview"), "ETF period source");
+  const mixed = getReportedReturns({
+    loadAdjustedReturns: { oneYear: 0.03 },
+    performanceOverview: { oneYearTotalReturn: 0.04, threeYearTotalReturn: 0.05 },
+  });
+  assert(mixed.returns["1Y"] === 3 && mixed.returns["3Y"] === 5, "Prioritize adjusted; fill missing overview periods");
+  const yearly = { ticker: "IBDU", type: "bond_etf" };
+  importMetrics(yearly, { annualTotalReturns: { returns: [
+    {year: 2024, annualValue: 0.035}, {year: 2025, annualValue: {raw: 0.049}},
+  ]}}, "2026-11-12");
+  assert(yearly.annual_total_returns["2024"] === 3.5, "Keep annual history without trailing returns");
+  assert(yearly.annual_total_returns["2025"] === 4.9, "Decode unvalidated annual history");
+  console.log("Yahoo fundPerformance validation, ETF fallback and annual-history tests passed.");
 }
 
 async function main() {
@@ -163,10 +219,22 @@ async function main() {
     try {
       const response = await fetchFundPerformance(yahoo, fund.ticker);
       const perf = response?.fundPerformance;
-      const { returns, asof } = getReportedReturns(perf);
-      console.log(fund.ticker, perf ? "fundPerformance received" : "fundPerformance absent", JSON.stringify(returns), "as-of", asof || "unknown");
-      if (Object.keys(returns).length === 0) {
-        console.log(fund.ticker, "module has no usable percentage fields; old figures retained");
+      const { returns, asof, fields } = getReportedReturns(perf);
+      console.log(fund.ticker, perf ? "fundPerformance received" : "fundPerformance absent",
+                  JSON.stringify(returns), "as-of", asof || "unknown",
+                  "fields", JSON.stringify(fields));
+      const annualCount = Array.isArray(perf?.annualTotalReturns?.returns)
+        ? perf.annualTotalReturns.returns.length : 0;
+      if (Object.keys(returns).length === 0 && annualCount === 0) {
+        // Log just performance-module shapes, not the verbose and unrelated
+        // risk statistics that caused Yahoo's schema validation problems.
+        const overview = perf?.performanceOverview || {};
+        const adjusted = perf?.loadAdjustedReturns || {};
+        console.log(fund.ticker, "available performance field names:",
+                    JSON.stringify({ performanceOverview: Object.keys(overview),
+                                     loadAdjustedReturns: Object.keys(adjusted),
+                                     annualReturnsRows: annualCount }));
+        console.log(fund.ticker, "no usable fund-performance fields; prior figures retained");
         continue;
       }
       updated += importMetrics(fund, perf, retrieved);
