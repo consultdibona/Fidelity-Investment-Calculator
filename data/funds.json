@@ -8,7 +8,8 @@
       "type": "money_market",
       "returns": {},
       "yield": null,
-      "source": "Yahoo Finance 7-day yield only; official total returns not loaded"
+      "source": "Money market: use seven-day yield or issuer total returns",
+      "return_details": {}
     },
     {
       "ticker": "FZROX",
@@ -33,7 +34,21 @@
       },
       "yield": null,
       "asof": "2026-11-12",
-      "source": "Yahoo Finance fund 3Y/5Y estimates; dubious YTD discarded"
+      "source": "Mixed historical sources; see return_details by period",
+      "return_details": {
+        "3Y": {
+          "source": "Yahoo Finance fund info: threeYearAverageReturn",
+          "method": "reported_yahoo_field",
+          "asof": null,
+          "retrieved": "2026-11-12"
+        },
+        "5Y": {
+          "source": "Yahoo Finance fund info: fiveYearAverageReturn",
+          "method": "reported_yahoo_field",
+          "asof": null,
+          "retrieved": "2026-11-12"
+        }
+      }
     },
     {
       "ticker": "FCNVX",
