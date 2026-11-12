@@ -17,12 +17,17 @@ main{max-width:960px;padding:0 14px 30px;margin:-20px auto 0}.panel{background:#
 <main><div style="background:#ddf3eb;color:#125748;font-size:12px;font-weight:700;border:1px solid #8bbcae;padding:9px 14px;border-radius:10px;margin-bottom:10px">Updated November 12, 2026 · Strategies, contribution calculator, projections, separate fund performance metrics</div>
 <section class="panel"><div class="sectiontitle"><h2>1. Choose a strategy</h2><span class="tag">Fidelity UTMA</span></div><p class="muted">Choose one strategy. Change any preset allocation or assumed return below.</p><div class="strategies" id="strategies"></div><p class="subtle" id="strategynote"></p></section>
 <section class="panel" id="performances"><div class="sectiontitle"><h2>Fund performance reference</h2><span class="tag">Returns ≠ APY</span></div>
-<p class="muted">Compare historical annualized total returns and income yields separately from the editable future assumptions used by both calculators. Historical results are backward-looking and can be negative.</p>
+<p class="muted">Historical total returns generally include reinvested dividends and distributions. Income yields are separate snapshots, not additional returns to add on top. The future assumptions used in the calculators are editable and not guaranteed.</p>
 <div style="overflow-x:auto"><table id="performancetable" style="width:100%;border-collapse:collapse;font-size:12px;min-width:700px">
-<thead><tr><th style="text-align:left;padding:9px;border-bottom:1px solid #dbe6e9">Fund</th><th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">YTD</th><th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">1Y history</th><th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">3Y history</th><th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">5Y history</th><th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">Current income yield*</th><th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">Future assumption</th></tr></thead>
+<thead><tr><th style="text-align:left;padding:9px;border-bottom:1px solid #dbe6e9">Fund</th><th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">YTD</th><th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">1Y history</th><th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">3Y history</th><th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">5Y history</th><th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">Income yields (dated)*</th><th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">Future assumption</th></tr></thead>
 <tbody></tbody></table></div>
 <p class="subtle" id="performanceinfo">Retrieving available historical records…</p>
-<p class="subtle">*Current SEC/7-day income yields are not provided by the adjusted-price API. “Not available” means there is no verified current yield. You may enter a yield manually with its as-of date using the controls below; those entries do not automatically alter growth projections.</p>
+<details class="settings"><summary>View calendar-year total returns (including reinvested distributions)</summary><div class="inside">
+<p class="mini">Completed calendar years, not annualized. These can differ sharply from a trailing 1-year return because they measure different dates.</p>
+<div style="overflow-x:auto"><table id="annualtable" style="width:100%;border-collapse:collapse;font-size:12px;min-width:530px"><thead></thead><tbody></tbody></table></div>
+<p class="subtle" id="annualinfo">Yahoo Finance calendar-year total returns where available. Missing entries are left blank; no estimate is invented.</p>
+</div></details>
+<p class="subtle">*Yield figures are dated snapshots from fund issuers, not live guaranteed rates. A 7-day money-market yield, 30-day SEC yield, and 12-month trailing distribution yield measure different things. Income yields do not get added to historical total returns or automatically change future-growth assumptions. See <a href="https://fundresearch.fidelity.com/mutual-funds/performance-and-risk/31617H300" target="_blank" rel="noopener">Fidelity's FDLXX performance</a> and <a href="https://www.ishares.com/us/products/310035/ishares-ibonds-dec-2029-term-corporate-etf" target="_blank" rel="noopener">BlackRock's IBDU disclosures</a>.</p>
 <details class="settings"><summary>Enter an income yield manually (optional)</summary><div class="inside"><div class="editrow"><label for="manualticker">Fund</label><label for="manualyield">Yield %</label><label for="yielddate">As-of date</label></div><div class="editrow"><select id="manualticker" style="min-width:0;width:100%;padding:8px;border:1px solid #ccdce1;border-radius:8px"></select><input id="manualyield" type="number" step=".01" placeholder="e.g. 4.50"><input id="yielddate" type="date"></div>
 <div class="row" style="justify-content:flex-start;flex-wrap:wrap"><label for="yieldtype" class="mini">Yield measure</label><select id="yieldtype" style="padding:8px;border:1px solid #ccdce1;border-radius:8px"><option value="7-day yield">7-day yield</option><option value="30-day SEC yield">30-day SEC yield</option><option value="Trailing distribution yield">Trailing distribution yield</option></select>
 <button class="smallbtn" id="saveyield" type="button">Save yield</button><button class="smallbtn" id="clearyield" type="button">Clear</button></div>
@@ -85,18 +90,44 @@ function performance(){
   if(!Number.isFinite(num))return "—";
   let meta=fund?.return_details?.[key]||{};
   let src=meta.source||fund?.source||"Source unavailable";
-  let date=meta.asof||meta.retrieved||fund?.asof||"Date not supplied";
+  let date=meta.asof||fund?.asof||meta.retrieved||"Date not supplied";
   let mark=meta.method==="adjusted_close_ratio"?"†":"";
   return '<span title="'+safeName(src+" | "+date)+'">'+percent(num)+mark+'</span>';
  };
+ const yieldRow=(y,manual)=>{
+   if(!y||!Number.isFinite(y.value))return "";
+   const link=typeof y.source_url==="string"&&y.source_url.startsWith("https://")
+      ?' · <a href="'+safeName(y.source_url)+'" rel="noopener" target="_blank">source</a>':"";
+   return '<div style="margin-bottom:5px"><b>'+percent(y.value)+'</b><small style="display:block;font-size:10px;line-height:1.35;color:#627b87">'+safeName(y.type||"Income yield")+' · '+safeName(y.asof||"as-of unavailable")+(manual?" · manual":"")+link+'</small></div>';
+ };
  table.innerHTML=selected.map(ticker=>{
-   let f=catalog.find(x=>x.ticker===ticker),y=manualYields[ticker]||f?.yield;
-   const ytext=y&&Number.isFinite(y.value)?percent(y.value)+" <small style='display:block;font-size:10px;color:#627b87'>"+safeName(y.type||"Income yield")+" · "+safeName(y.asof||"date unavailable")+(manualYields[ticker]?" · manual":"")+"</small>":"Not available";
+   let f=catalog.find(x=>x.ticker===ticker);
+   const primary=manualYields[ticker]||f?.yield;
+   const supplements=Array.isArray(f?.additional_yields)?f.additional_yields:[];
+   const ytext=yieldRow(primary,Boolean(manualYields[ticker]))+supplements.map(y=>yieldRow(y,false)).join("")||"Not available";
    return "<tr><td style='padding:10px 8px;border-bottom:1px solid #edf2f3'><b>"+safeName(ticker)+"</b><small style='display:block;color:#67818b'>"+safeName(f?.name||info[ticker]?.name||"Custom fund")+"</small></td>"+
    ["YTD","1Y","3Y","5Y"].map(k=>"<td style='text-align:right;padding:8px;border-bottom:1px solid #edf2f3'>"+formatHistory(ticker,k)+"</td>").join("")+
    "<td style='text-align:right;padding:8px;border-bottom:1px solid #edf2f3'>"+ytext+"</td><td style='text-align:right;padding:8px;border-bottom:1px solid #edf2f3;font-weight:700'>"+(Number.isFinite(state.rates[ticker])?percent(state.rates[ticker]):"—")+"</td></tr>"
  }).join("");
- $("performanceinfo").textContent="YTD is not annualized; 1Y is a one-year return; 3Y and 5Y are annualized. † = dividend-adjusted price estimate, not issuer-reported performance. Hover values for source and date. Fund dates: "+selected.map(t=>{let f=catalog.find(x=>x.ticker===t);return t+" "+(f?.asof||"not available")}).join(" · ")+". Verify against official issuer returns before making investment decisions.";
+ const yearNumbers=[...new Set(selected.flatMap(t=>{
+   const fund=catalog.find(f=>f.ticker===t);
+   return Object.keys(fund?.annual_total_returns||{}).map(Number);
+ }))].filter(y=>Number.isInteger(y)&&y>=2000&&y<new Date().getFullYear()).sort((a,b)=>a-b).slice(-5);
+ const annualTable=$("annualtable");
+ annualTable.querySelector("thead").innerHTML='<tr><th style="text-align:left;padding:9px;border-bottom:1px solid #dbe6e9">Fund</th>'+
+   yearNumbers.map(y=>'<th style="text-align:right;padding:9px;border-bottom:1px solid #dbe6e9">'+y+'</th>').join("")+'</tr>';
+ annualTable.querySelector("tbody").innerHTML=selected.map(t=>{
+   const f=catalog.find(x=>x.ticker===t);
+   return '<tr><td style="padding:9px;border-bottom:1px solid #edf2f3"><b>'+safeName(t)+'</b></td>'+
+     yearNumbers.map(y=>{
+       const value=f?.annual_total_returns?.[String(y)];
+       return '<td style="text-align:right;padding:9px;border-bottom:1px solid #edf2f3">'+(Number.isFinite(value)?percent(value):"—")+'</td>';
+     }).join("")+'</tr>';
+ }).join("");
+ $("annualinfo").textContent=yearNumbers.length
+   ?"Calendar-year total returns supplied by Yahoo Finance where available. A dash means that fund/year figure is not provided. These are not future predictions."
+   :"No calendar-year total-return figures are available for this strategy yet.";
+ $("performanceinfo").textContent="YTD is year-to-date (not annualized); 1Y is trailing one-year total return; 3Y and 5Y are annualized total returns. Dividends/distributions are included where reported as total returns. † = dividend-adjusted price estimate, not issuer-reported performance. Hover on a return for its source and as-of date. Fund historical dates: "+selected.map(t=>{let f=catalog.find(x=>x.ticker===t);return t+" "+(f?.asof||"not available")}).join(" · ")+".";
  const sel=$("manualticker"),old=sel.value;sel.innerHTML=selected.map(t=>'<option value="'+safeName(t)+'">'+safeName(t)+'</option>').join("");if(selected.includes(old))sel.value=old;
 }
 function loadYieldEditor(){let ticker=$("manualticker").value,item=manualYields[ticker];$("manualyield").value=item?item.value:"";$("yielddate").value=item?.asof||"";$("yieldtype").value=item?.type||"7-day yield";}
