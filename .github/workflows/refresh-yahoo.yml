@@ -24,6 +24,15 @@ jobs:
         run: python -m unittest discover -s scripts -p "test_yahoo_returns.py" -v
       - name: Refresh available fund-level performance and yield fields
         run: python scripts/refresh_yahoo.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Yahoo fundPerformance client
+        run: npm install --no-save --no-package-lock --ignore-scripts yahoo-finance2@4.0.6
+      - name: Test direct Yahoo fundPerformance conversion
+        run: node scripts/refresh_yahoo_performance.mjs --self-test
+      - name: Retrieve Yahoo published fund-performance table
+        run: node scripts/refresh_yahoo_performance.mjs
       - name: Preserve refreshed fund catalog as artifact
         if: always()
         uses: actions/upload-artifact@v4
