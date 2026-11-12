@@ -18,26 +18,33 @@
       "returns": {
         "1Y": 12.09,
         "3Y": 23.25,
-        "5Y": 11.17
+        "5Y": 11.17,
+        "YTD": 11.55
       },
       "yield": null,
       "asof": "2026-11-09",
       "source": "Yahoo Finance fund performance; see return_details per period",
       "return_details": {
         "1Y": {
-          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns.oneYear",
           "method": "reported_yahoo_fund_performance",
-          "asof": "2026-11-09",
+          "asof": null,
           "retrieved": "2026-11-12"
         },
         "3Y": {
-          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns.threeYear",
           "method": "reported_yahoo_fund_performance",
-          "asof": "2026-11-09",
+          "asof": null,
           "retrieved": "2026-11-12"
         },
         "5Y": {
-          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns.fiveYear",
+          "method": "reported_yahoo_fund_performance",
+          "asof": null,
+          "retrieved": "2026-11-12"
+        },
+        "YTD": {
+          "source": "Yahoo Finance fundPerformance.performanceOverview.ytdReturnPct",
           "method": "reported_yahoo_fund_performance",
           "asof": "2026-11-09",
           "retrieved": "2026-11-12"
@@ -60,25 +67,48 @@
       "type": "bond_etf",
       "returns": {
         "3Y": 6.15,
-        "5Y": 1.18
+        "5Y": 1.18,
+        "YTD": 0.9,
+        "1Y": 1.8
       },
       "yield": null,
-      "asof": "2026-11-12",
-      "source": "Mixed historical sources; see return_details by period",
+      "asof": "2026-11-10",
+      "source": "Yahoo Finance fund performance; see return_details per period",
       "return_details": {
         "3Y": {
-          "source": "Yahoo Finance fund info: threeYearAverageReturn",
-          "method": "reported_yahoo_field",
-          "asof": null,
+          "source": "Yahoo Finance fundPerformance.performanceOverview.threeYearTotalReturn",
+          "method": "reported_yahoo_fund_performance",
+          "asof": "2026-11-10",
           "retrieved": "2026-11-12"
         },
         "5Y": {
-          "source": "Yahoo Finance fund info: fiveYearAverageReturn",
-          "method": "reported_yahoo_field",
-          "asof": null,
+          "source": "Yahoo Finance fundPerformance.performanceOverview.fiveYrAvgReturnPct",
+          "method": "reported_yahoo_fund_performance",
+          "asof": "2026-11-10",
+          "retrieved": "2026-11-12"
+        },
+        "YTD": {
+          "source": "Yahoo Finance fundPerformance.performanceOverview.ytdReturnPct",
+          "method": "reported_yahoo_fund_performance",
+          "asof": "2026-11-10",
+          "retrieved": "2026-11-12"
+        },
+        "1Y": {
+          "source": "Yahoo Finance fundPerformance.performanceOverview.oneYearTotalReturn",
+          "method": "reported_yahoo_fund_performance",
+          "asof": "2026-11-10",
           "retrieved": "2026-11-12"
         }
-      }
+      },
+      "annual_total_returns": {
+        "2020": 10.38,
+        "2021": -2.05,
+        "2022": -13.04,
+        "2023": 8.66,
+        "2024": 3.61,
+        "2025": 7.59
+      },
+      "annual_total_returns_source": "Yahoo Finance fundPerformance.annualTotalReturns"
     },
     {
       "ticker": "FCNVX",
@@ -87,26 +117,33 @@
       "returns": {
         "1Y": 3.78,
         "3Y": 4.74,
-        "5Y": 3.99
+        "5Y": 3.99,
+        "YTD": 3.18
       },
       "yield": null,
       "asof": "2026-11-09",
       "source": "Yahoo Finance fund performance; see return_details per period",
       "return_details": {
         "1Y": {
-          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns.oneYear",
           "method": "reported_yahoo_fund_performance",
-          "asof": "2026-11-09",
+          "asof": null,
           "retrieved": "2026-11-12"
         },
         "3Y": {
-          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns.threeYear",
           "method": "reported_yahoo_fund_performance",
-          "asof": "2026-11-09",
+          "asof": null,
           "retrieved": "2026-11-12"
         },
         "5Y": {
-          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns.fiveYear",
+          "method": "reported_yahoo_fund_performance",
+          "asof": null,
+          "retrieved": "2026-11-12"
+        },
+        "YTD": {
+          "source": "Yahoo Finance fundPerformance.performanceOverview.ytdReturnPct",
           "method": "reported_yahoo_fund_performance",
           "asof": "2026-11-09",
           "retrieved": "2026-11-12"
@@ -137,26 +174,33 @@
       "returns": {
         "1Y": 12.09,
         "3Y": 23.38,
-        "5Y": 12.05
+        "5Y": 12.05,
+        "YTD": 11.32
       },
       "yield": null,
       "asof": "2026-11-09",
       "source": "Yahoo Finance fund performance; see return_details per period",
       "return_details": {
         "1Y": {
-          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns.oneYear",
           "method": "reported_yahoo_fund_performance",
-          "asof": "2026-11-09",
+          "asof": null,
           "retrieved": "2026-11-12"
         },
         "3Y": {
-          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns.threeYear",
           "method": "reported_yahoo_fund_performance",
-          "asof": "2026-11-09",
+          "asof": null,
           "retrieved": "2026-11-12"
         },
         "5Y": {
-          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns",
+          "source": "Yahoo Finance fundPerformance.loadAdjustedReturns.fiveYear",
+          "method": "reported_yahoo_fund_performance",
+          "asof": null,
+          "retrieved": "2026-11-12"
+        },
+        "YTD": {
+          "source": "Yahoo Finance fundPerformance.performanceOverview.ytdReturnPct",
           "method": "reported_yahoo_fund_performance",
           "asof": "2026-11-09",
           "retrieved": "2026-11-12"
