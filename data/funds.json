@@ -28,24 +28,25 @@
       "name": "iShares iBonds Dec 2029 Term Corporate ETF",
       "type": "bond_etf",
       "returns": {
-        "YTD": 110.1,
         "3Y": 6.15,
         "5Y": 1.18
       },
       "yield": null,
       "asof": "2026-11-12",
-      "source": "Yahoo Finance fund return fields via yfinance (retrieved 2026-11-12)"
+      "source": "Yahoo Finance fund 3Y/5Y estimates; dubious YTD discarded"
     },
     {
       "ticker": "FCNVX",
       "name": "Fidelity Conservative Income Bond Fund",
       "type": "bond_mutual_fund",
       "returns": {
-        "YTD": 308.17
+        "1Y": 3.62,
+        "3Y": 4.69,
+        "5Y": 3.79
       },
       "yield": null,
-      "asof": "2026-11-12",
-      "source": "Yahoo Finance fund return fields via yfinance (retrieved 2026-11-12)"
+      "asof": "2026-11-10",
+      "source": "Alpha Vantage adjusted-price estimates; Yahoo YTD discarded"
     },
     {
       "ticker": "FXAIX",
