@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-13",
   "source": "Fund catalog with Yahoo historical performance and issuer-reported yields; each metric has its own as-of date",
   "funds": [
     {
@@ -279,8 +279,25 @@
         "5Y": 3.88
       },
       "yield": null,
-      "asof": "2026-11-11",
-      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
+      "asof": "2026-11-12",
+      "source": "Mixed historical sources; see return_details by period",
+      "return_details": {
+        "1Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-12"
+        },
+        "3Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-12"
+        },
+        "5Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-12"
+        }
+      }
     },
     {
       "ticker": "FUMBX",
@@ -373,5 +390,5 @@
   ],
   "yahoo_checked": "2026-11-12",
   "yahoo_performance_checked": "2026-11-12",
-  "refresh_cursor": 3
+  "refresh_cursor": 6
 }
