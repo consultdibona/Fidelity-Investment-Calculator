@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-13",
+  "updated": "2026-11-16",
   "source": "Fund catalog with Yahoo historical performance and issuer-reported yields; each metric has its own as-of date",
   "funds": [
     {
@@ -304,39 +304,90 @@
       "name": "Fidelity Short-Term Treasury Bond Index Fund",
       "type": "bond_mutual_fund",
       "returns": {
-        "1Y": 1.16,
-        "3Y": 4.1,
-        "5Y": 1.53
+        "1Y": 0.87,
+        "3Y": 3.96,
+        "5Y": 1.45
       },
       "yield": null,
-      "asof": "2026-11-10",
-      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
+      "asof": "2026-11-13",
+      "source": "Mixed historical sources; see return_details by period",
+      "return_details": {
+        "1Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-13"
+        },
+        "3Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-13"
+        },
+        "5Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-13"
+        }
+      }
     },
     {
       "ticker": "FSHBX",
       "name": "Fidelity Short-Term Bond Fund",
       "type": "bond_mutual_fund",
       "returns": {
-        "1Y": 1.92,
-        "3Y": 4.36,
-        "5Y": 2.33
+        "1Y": 1.82,
+        "3Y": 4.27,
+        "5Y": 2.28
       },
       "yield": null,
-      "asof": "2026-11-10",
-      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
+      "asof": "2026-11-13",
+      "source": "Mixed historical sources; see return_details by period",
+      "return_details": {
+        "1Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-13"
+        },
+        "3Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-13"
+        },
+        "5Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-13"
+        }
+      }
     },
     {
       "ticker": "IBTJ",
       "name": "iShares iBonds Dec 2029 Term Treasury ETF",
       "type": "treasury_etf",
       "returns": {
-        "1Y": 0.74,
-        "3Y": 4.49,
-        "5Y": 0.01
+        "1Y": 0.69,
+        "3Y": 4.08,
+        "5Y": -0.02
       },
       "yield": null,
-      "asof": "2026-11-11",
-      "source": "Alpha Vantage weekly adjusted close, annualized total return estimate"
+      "asof": "2026-11-16",
+      "source": "Mixed historical sources; see return_details by period",
+      "return_details": {
+        "1Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-16"
+        },
+        "3Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-16"
+        },
+        "5Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-16"
+        }
+      }
     },
     {
       "ticker": "FDLAX",
@@ -390,5 +441,5 @@
   ],
   "yahoo_checked": "2026-11-12",
   "yahoo_performance_checked": "2026-11-12",
-  "refresh_cursor": 6
+  "refresh_cursor": 9
 }
