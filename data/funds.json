@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16",
+  "updated": "2026-11-17",
   "source": "Fund catalog with Yahoo historical performance and issuer-reported yields; each metric has its own as-of date",
   "funds": [
     {
@@ -400,15 +400,61 @@
       "ticker": "VTI",
       "name": "Vanguard Total Stock Market ETF",
       "type": "equity_etf",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": 10.38,
+        "3Y": 18.82,
+        "5Y": 9.86
+      },
+      "yield": null,
+      "return_details": {
+        "1Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-17"
+        },
+        "3Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-17"
+        },
+        "5Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-17"
+        }
+      },
+      "asof": "2026-11-17",
+      "source": "Mixed historical sources; see return_details by period"
     },
     {
       "ticker": "BND",
       "name": "Vanguard Total Bond Market ETF",
       "type": "bond_etf",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": -0.71,
+        "3Y": 3.93,
+        "5Y": -0.34
+      },
+      "yield": null,
+      "return_details": {
+        "1Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-17"
+        },
+        "3Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-17"
+        },
+        "5Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-17"
+        }
+      },
+      "asof": "2026-11-17",
+      "source": "Mixed historical sources; see return_details by period"
     },
     {
       "ticker": "VT",
@@ -441,5 +487,5 @@
   ],
   "yahoo_checked": "2026-11-12",
   "yahoo_performance_checked": "2026-11-12",
-  "refresh_cursor": 9
+  "refresh_cursor": 12
 }
