@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "source": "Fund catalog with Yahoo historical performance and issuer-reported yields; each metric has its own as-of date",
   "funds": [
     {
@@ -460,8 +460,31 @@
       "ticker": "VT",
       "name": "Vanguard Total World Stock ETF",
       "type": "equity_etf",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": 12.1,
+        "3Y": 17.6,
+        "5Y": 8.89
+      },
+      "yield": null,
+      "return_details": {
+        "1Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-18"
+        },
+        "3Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-18"
+        },
+        "5Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-18"
+        }
+      },
+      "asof": "2026-11-18",
+      "source": "Mixed historical sources; see return_details by period"
     },
     {
       "ticker": "SPAXX",
@@ -487,5 +510,5 @@
   ],
   "yahoo_checked": "2026-11-17",
   "yahoo_performance_checked": "2026-11-17",
-  "refresh_cursor": 12
+  "refresh_cursor": 15
 }
