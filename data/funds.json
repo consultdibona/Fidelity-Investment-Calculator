@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-18",
+  "updated": "2026-11-19",
   "source": "Fund catalog with Yahoo historical performance and issuer-reported yields; each metric has its own as-of date",
   "funds": [
     {
@@ -504,11 +504,34 @@
       "ticker": "FXIFX",
       "name": "Fidelity Freedom Index 2030 Fund Investor Class",
       "type": "target_date_mutual_fund",
-      "returns": {},
-      "yield": null
+      "returns": {
+        "1Y": 6.39,
+        "3Y": 11.73,
+        "5Y": 4.78
+      },
+      "yield": null,
+      "return_details": {
+        "1Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-18"
+        },
+        "3Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-18"
+        },
+        "5Y": {
+          "source": "Alpha Vantage weekly adjusted close (calculated)",
+          "method": "adjusted_close_ratio",
+          "asof": "2026-11-18"
+        }
+      },
+      "asof": "2026-11-18",
+      "source": "Mixed historical sources; see return_details by period"
     }
   ],
   "yahoo_checked": "2026-11-17",
   "yahoo_performance_checked": "2026-11-17",
-  "refresh_cursor": 15
+  "refresh_cursor": 2
 }
