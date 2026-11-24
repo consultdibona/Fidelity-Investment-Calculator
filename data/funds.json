@@ -364,28 +364,28 @@
       "name": "iShares iBonds Dec 2029 Term Treasury ETF",
       "type": "treasury_etf",
       "returns": {
-        "1Y": 0.69,
-        "3Y": 4.08,
-        "5Y": -0.02
+        "1Y": 0.79,
+        "3Y": 4.31,
+        "5Y": 0.04
       },
       "yield": null,
-      "asof": "2026-11-16",
+      "asof": "2026-11-24",
       "source": "Mixed historical sources; see return_details by period",
       "return_details": {
         "1Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-16"
+          "asof": "2026-11-24"
         },
         "3Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-16"
+          "asof": "2026-11-24"
         },
         "5Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-16"
+          "asof": "2026-11-24"
         }
       }
     },
@@ -401,29 +401,29 @@
       "name": "Vanguard Total Stock Market ETF",
       "type": "equity_etf",
       "returns": {
-        "1Y": 10.38,
-        "3Y": 18.82,
-        "5Y": 9.86
+        "1Y": 10.45,
+        "3Y": 17.71,
+        "5Y": 9.97
       },
       "yield": null,
       "return_details": {
         "1Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-17"
+          "asof": "2026-11-24"
         },
         "3Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-17"
+          "asof": "2026-11-24"
         },
         "5Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-17"
+          "asof": "2026-11-24"
         }
       },
-      "asof": "2026-11-17",
+      "asof": "2026-11-24",
       "source": "Mixed historical sources; see return_details by period"
     },
     {
@@ -533,5 +533,5 @@
   ],
   "yahoo_checked": "2026-11-17",
   "yahoo_performance_checked": "2026-11-17",
-  "refresh_cursor": 8
+  "refresh_cursor": 11
 }
