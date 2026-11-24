@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-24",
   "source": "Fund catalog with Yahoo historical performance and issuer-reported yields; each metric has its own as-of date",
   "funds": [
     {
@@ -275,27 +275,27 @@
       "type": "treasury_etf",
       "returns": {
         "1Y": 3.72,
-        "3Y": 4.48,
-        "5Y": 3.88
+        "3Y": 4.45,
+        "5Y": 3.9
       },
       "yield": null,
-      "asof": "2026-11-12",
+      "asof": "2026-11-23",
       "source": "Mixed historical sources; see return_details by period",
       "return_details": {
         "1Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-12"
+          "asof": "2026-11-23"
         },
         "3Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-12"
+          "asof": "2026-11-23"
         },
         "5Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-12"
+          "asof": "2026-11-23"
         }
       }
     },
@@ -304,28 +304,28 @@
       "name": "Fidelity Short-Term Treasury Bond Index Fund",
       "type": "bond_mutual_fund",
       "returns": {
-        "1Y": 0.87,
-        "3Y": 3.96,
-        "5Y": 1.45
+        "1Y": 1.28,
+        "3Y": 3.99,
+        "5Y": 1.59
       },
       "yield": null,
-      "asof": "2026-11-13",
+      "asof": "2026-11-20",
       "source": "Mixed historical sources; see return_details by period",
       "return_details": {
         "1Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-13"
+          "asof": "2026-11-20"
         },
         "3Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-13"
+          "asof": "2026-11-20"
         },
         "5Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-13"
+          "asof": "2026-11-20"
         }
       }
     },
@@ -334,28 +334,28 @@
       "name": "Fidelity Short-Term Bond Fund",
       "type": "bond_mutual_fund",
       "returns": {
-        "1Y": 1.82,
-        "3Y": 4.27,
-        "5Y": 2.28
+        "1Y": 1.95,
+        "3Y": 4.26,
+        "5Y": 2.35
       },
       "yield": null,
-      "asof": "2026-11-13",
+      "asof": "2026-11-20",
       "source": "Mixed historical sources; see return_details by period",
       "return_details": {
         "1Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-13"
+          "asof": "2026-11-20"
         },
         "3Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-13"
+          "asof": "2026-11-20"
         },
         "5Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-13"
+          "asof": "2026-11-20"
         }
       }
     },
@@ -533,5 +533,5 @@
   ],
   "yahoo_checked": "2026-11-17",
   "yahoo_performance_checked": "2026-11-17",
-  "refresh_cursor": 5
+  "refresh_cursor": 8
 }
