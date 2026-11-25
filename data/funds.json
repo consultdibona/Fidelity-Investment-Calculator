@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24",
+  "updated": "2026-11-25",
   "source": "Fund catalog with Yahoo historical performance and issuer-reported yields; each metric has its own as-of date",
   "funds": [
     {
@@ -431,29 +431,29 @@
       "name": "Vanguard Total Bond Market ETF",
       "type": "bond_etf",
       "returns": {
-        "1Y": -0.71,
-        "3Y": 3.93,
-        "5Y": -0.34
+        "1Y": -0.31,
+        "3Y": 4.4,
+        "5Y": -0.1
       },
       "yield": null,
       "return_details": {
         "1Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-17"
+          "asof": "2026-11-25"
         },
         "3Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-17"
+          "asof": "2026-11-25"
         },
         "5Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-17"
+          "asof": "2026-11-25"
         }
       },
-      "asof": "2026-11-17",
+      "asof": "2026-11-25",
       "source": "Mixed historical sources; see return_details by period"
     },
     {
@@ -461,29 +461,29 @@
       "name": "Vanguard Total World Stock ETF",
       "type": "equity_etf",
       "returns": {
-        "1Y": 12.1,
-        "3Y": 17.6,
-        "5Y": 8.89
+        "1Y": 6.49,
+        "3Y": 16.6,
+        "5Y": 9.2
       },
       "yield": null,
       "return_details": {
         "1Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-18"
+          "asof": "2026-11-25"
         },
         "3Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-18"
+          "asof": "2026-11-25"
         },
         "5Y": {
           "source": "Alpha Vantage weekly adjusted close (calculated)",
           "method": "adjusted_close_ratio",
-          "asof": "2026-11-18"
+          "asof": "2026-11-25"
         }
       },
-      "asof": "2026-11-18",
+      "asof": "2026-11-25",
       "source": "Mixed historical sources; see return_details by period"
     },
     {
@@ -533,5 +533,5 @@
   ],
   "yahoo_checked": "2026-11-24",
   "yahoo_performance_checked": "2026-11-24",
-  "refresh_cursor": 11
+  "refresh_cursor": 14
 }
